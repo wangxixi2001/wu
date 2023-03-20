@@ -83,10 +83,10 @@ func PutEdu(stub shim.ChaincodeStubInterface, edu Education) ([]byte, bool) {
 
 // 根据身份证号码查询信息状态
 // args: entityID
-func GetEduInfo(stub shim.ChaincodeStubInterface, entityID string) (Education, bool)  {
+func GetEduInfo(stub shim.ChaincodeStubInterface, ownerID string) (Education, bool)  {
 	var edu Education
 	// 根据身份证号码查询信息状态
-	b, err := stub.GetState(entityID)
+	b, err := stub.GetState(ownerID)
 	if err != nil {
 		return edu, false
 	}
@@ -155,7 +155,7 @@ func (t *EducationChaincode) addEdu(stub shim.ChaincodeStubInterface, args []str
 	}
 
 	// 查重: 身份证号码必须唯一
-	_, exist := GetEduInfo(stub, edu.EntityID)
+	_, exist := GetEduInfo(stub, edu.OwnerID)
 	if exist {
 		return shim.Error("要添加的身份证号码已存在")
 	}
@@ -181,11 +181,11 @@ func (t *EducationChaincode) queryEduByCertNoAndName(stub shim.ChaincodeStubInte
 		return shim.Error("给定的参数个数不符合要求")
 	}
 	CertNo := args[0]
-	name := args[1]
+	AssetName := args[1]
 
 	// 拼装CouchDB所需要的查询字符串(是标准的一个JSON串)
 	// queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"eduObj\", \"CertNo\":\"%s\"}}", CertNo)
-	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\", \"CertNo\":\"%s\", \"Name\":\"%s\"}}", DOC_TYPE, CertNo, name)
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\", \"CertNo\":\"%s\", \"Name\":\"%s\"}}", DOC_TYPE, CertNo, AssetName)
 
 	// 查询数据
 	result, err := getEduByQueryString(stub, queryString)
@@ -223,7 +223,7 @@ func (t *EducationChaincode) queryEduInfoByEntityID(stub shim.ChaincodeStubInter
 	}
 
 	// 获取历史变更数据
-	iterator, err := stub.GetHistoryForKey(edu.EntityID)
+	iterator, err := stub.GetHistoryForKey(edu.OwnerID)
 	if err != nil {
 		return shim.Error("根据指定的身份证号码查询对应的历史变更数据失败")
 	}
@@ -277,31 +277,19 @@ func (t *EducationChaincode) updateEdu(stub shim.ChaincodeStubInterface, args []
 	}
 
 	// 根据身份证号码查询信息
-	result, bl := GetEduInfo(stub, info.EntityID)
+	result, bl := GetEduInfo(stub, info.OwnerID)
 	if !bl{
 		return shim.Error("根据身份证号码查询信息时发生错误")
 	}
 
-	result.Name = info.Name
-	result.BirthDay = info.BirthDay
-	result.Nation = info.Nation
-	result.Gender = info.Gender
-	result.Place = info.Place
-	result.EntityID = info.EntityID
-	result.Photo = info.Photo
-
-
-	result.EnrollDate = info.EnrollDate
-	result.GraduationDate = info.GraduationDate
-	result.SchoolName = info.SchoolName
-	result.Major = info.Major
-	result.QuaType = info.QuaType
-	result.Length = info.Length
-	result.Mode = info.Mode
-	result.Level = info.Level
-	result.Graduation = info.Graduation
-	result.CertNo = info.CertNo;
-
+	result.AssetName = info.AssetName
+	result.OwnerID= info.OwnerID
+	result.State = info.State
+	result.Version = info.Version
+        result.CertNo = info.CertNo
+	result.Ciphertext = info.Ciphertext
+	result.Note = info.Note;
+	
 	_, bl = PutEdu(stub, result)
 	if !bl {
 		return shim.Error("保存信息信息时发生错误")
