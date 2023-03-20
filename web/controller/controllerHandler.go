@@ -86,23 +86,13 @@ func (app *Application) AddEduShow(w http.ResponseWriter, r *http.Request)  {
 func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request)  {
 
 	edu := service.Education{
-		Name:r.FormValue("name"),
-		Gender:r.FormValue("gender"),
-		Nation:r.FormValue("nation"),
-		EntityID:r.FormValue("entityID"),
-		Place:r.FormValue("place"),
-		BirthDay:r.FormValue("birthDay"),
-		EnrollDate:r.FormValue("enrollDate"),
-		GraduationDate:r.FormValue("graduationDate"),
-		SchoolName:r.FormValue("schoolName"),
-		Major:r.FormValue("major"),
-		QuaType:r.FormValue("quaType"),
-		Length:r.FormValue("length"),
-		Mode:r.FormValue("mode"),
-		Level:r.FormValue("level"),
-		Graduation:r.FormValue("graduation"),
+		AssetName:r.FormValue("assetName"),
+		OwnerID:r.FormValue("ownerID"),
+		State:r.FormValue("state"),
+		Version:r.FormValue("version"),
 		CertNo:r.FormValue("certNo"),
-		Photo:r.FormValue("photo"),
+		Ciphertext:r.FormValue("ciphertext"),
+		Note:r.FormValue("note"),
 	}
 
 	app.Setup.SaveEdu(edu)
@@ -126,7 +116,7 @@ func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request)  {
 
 	//ShowView(w, r, "addEdu.html", data)
 	r.Form.Set("certNo", edu.CertNo)
-	r.Form.Set("name", edu.Name)
+	r.Form.Set("assetName", edu.AssetName)
 	app.FindCertByNoAndName(w, r)
 }
 
@@ -146,7 +136,7 @@ func (app *Application) QueryPage(w http.ResponseWriter, r *http.Request)  {
 // 根据证书编号与姓名查询信息
 func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Request)  {
 	certNo := r.FormValue("certNo")
-	name := r.FormValue("name")
+	name := r.FormValue("assetName")
 	result, err := app.Setup.FindEduByCertNoAndName(certNo, name)
 	var edu = service.Education{}
 	json.Unmarshal(result, &edu)
@@ -191,8 +181,8 @@ func (app *Application) QueryPage2(w http.ResponseWriter, r *http.Request)  {
 
 // 根据身份证号码查询信息
 func (app *Application) FindByID(w http.ResponseWriter, r *http.Request)  {
-	entityID := r.FormValue("entityID")
-	result, err := app.Setup.FindEduInfoByEntityID(entityID)
+	ownerID := r.FormValue("ownerID")
+	result, err := app.Setup.FindEduInfoByEntityID(ownerID)
 	var edu = service.Education{}
 	json.Unmarshal(result, &edu)
 
@@ -222,7 +212,7 @@ func (app *Application) FindByID(w http.ResponseWriter, r *http.Request)  {
 func (app *Application) ModifyShow(w http.ResponseWriter, r *http.Request)  {
 	// 根据证书编号与姓名查询信息
 	certNo := r.FormValue("certNo")
-	name := r.FormValue("name")
+	name := r.FormValue("assetName")
 	result, err := app.Setup.FindEduByCertNoAndName(certNo, name)
 
 	var edu = service.Education{}
@@ -251,23 +241,13 @@ func (app *Application) ModifyShow(w http.ResponseWriter, r *http.Request)  {
 // 修改/添加新信息
 func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	edu := service.Education{
-		Name:r.FormValue("name"),
-		Gender:r.FormValue("gender"),
-		Nation:r.FormValue("nation"),
-		EntityID:r.FormValue("entityID"),
-		Place:r.FormValue("place"),
-		BirthDay:r.FormValue("birthDay"),
-		EnrollDate:r.FormValue("enrollDate"),
-		GraduationDate:r.FormValue("graduationDate"),
-		SchoolName:r.FormValue("schoolName"),
-		Major:r.FormValue("major"),
-		QuaType:r.FormValue("quaType"),
-		Length:r.FormValue("length"),
-		Mode:r.FormValue("mode"),
-		Level:r.FormValue("level"),
-		Graduation:r.FormValue("graduation"),
+		AssetName:r.FormValue("assetName"),
+		OwnerID:r.FormValue("ownerID"),
+		State:r.FormValue("state"),
+		Version:r.FormValue("version"),
 		CertNo:r.FormValue("certNo"),
-		Photo:r.FormValue("photo"),
+		Ciphertext:r.FormValue("ciphertext"),
+		Note:r.FormValue("note"),
 	}
 
 	//transactionID, err := app.Setup.ModifyEdu(edu)
@@ -294,6 +274,6 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	*/
 
 	r.Form.Set("certNo", edu.CertNo)
-	r.Form.Set("name", edu.Name)
+	r.Form.Set("name", edu.AssetName)
 	app.FindCertByNoAndName(w, r)
 }
