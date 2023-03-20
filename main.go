@@ -65,23 +65,14 @@ func main() {
 	fmt.Println(">> 通过链码外部服务设置链码状态......")
 
 	edu := service.Education{
-		Name: "张三",
-		Gender: "男",
-		Nation: "汉",
-		EntityID: "101",
-		Place: "北京",
-		BirthDay: "1991年01月01日",
-		EnrollDate: "2009年9月",
-		GraduationDate: "2013年7月",
-		SchoolName: "中国政法大学",
-		Major: "社会学",
-		QuaType: "普通",
-		Length: "四年",
-		Mode: "普通全日制",
-		Level: "本科",
-		Graduation: "毕业",
+		AssetName: "Labor Contract01",
+		OwnerID: "101",
+		State: "valid",
+		Version:"1.0"
 		CertNo: "111",
-		Photo: "/static/photo/11.png",
+		Ciphertext: "uQyiNNQr5tZMuNpZqooMkg==",
+		Note: ".......",
+		
 	}
 
 	serviceSetup, err := service.InitService(info.ChaincodeID, info.ChannelID, info.Orgs[0], sdk)
