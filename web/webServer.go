@@ -7,7 +7,7 @@ package web
 import (
 	"net/http"
 	"fmt"
-	"education/web/controller"
+	"wu/web/controller"
 )
 
 
