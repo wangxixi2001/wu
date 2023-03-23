@@ -7,7 +7,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"time"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
-	"education/sdkInit"
+	"wu/sdkInit"
 )
 
 type Education struct {
