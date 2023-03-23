@@ -91,7 +91,7 @@ func (app *Application) AddEduShow(w http.ResponseWriter, r *http.Request)  {
 func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request)  {
 	const MySecret string = "abc&1*~#^2^#s0^=)^^7%b34"
 	hashValue:=GetSha256(r.FormValue("ciphertext"))
-    note,err:=Encrypt(hashValue, MySecret)
+        note,err:=Encrypt(hashValue, MySecret)
 	if err != nil {
 		fmt.Println("error encrypting your classified text: ", err)
 	}
@@ -291,6 +291,7 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	r.Form.Set("name", edu.AssetName)
 	app.FindCertByNoAndName(w, r)
 }
+
 var bytess = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
 func Encrypt(text, MySecret string) (string, error) {
 	block, err := aes.NewCipher([]byte(MySecret))
