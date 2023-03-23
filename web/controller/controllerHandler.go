@@ -3,10 +3,15 @@
 package controller
 
 import (
-	"net/http"
-	"encoding/json"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/sha256"
 	"education/service"
+	"encoding/base64"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"net/http"
 )
 
 var cuser User
@@ -84,15 +89,24 @@ func (app *Application) AddEduShow(w http.ResponseWriter, r *http.Request)  {
 
 // 添加信息
 func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request)  {
-
+	const MySecret string = "abc&1*~#^2^#s0^=)^^7%b34"
+	hashValue:=GetSha256(r.FormValue("ciphertext"))
+    note,err:=Encrypt(hashValue, MySecret)
+	if err != nil {
+		fmt.Println("error encrypting your classified text: ", err)
+	}
+	encText, err := Encrypt(r.FormValue("ciphertext"), MySecret)
+	if err != nil {
+		fmt.Println("error encrypting your classified text: ", err)
+	}
 	edu := service.Education{
 		AssetName:r.FormValue("assetName"),
 		OwnerID:r.FormValue("ownerID"),
 		State:r.FormValue("state"),
 		Version:r.FormValue("version"),
 		CertNo:r.FormValue("certNo"),
-		Ciphertext:r.FormValue("ciphertext"),
-		Note:r.FormValue("note"),
+		Ciphertext:encText,
+		Note:note,
 	}
 
 	app.Setup.SaveEdu(edu)
@@ -276,4 +290,27 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	r.Form.Set("certNo", edu.CertNo)
 	r.Form.Set("name", edu.AssetName)
 	app.FindCertByNoAndName(w, r)
+}
+var bytess = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
+func Encrypt(text, MySecret string) (string, error) {
+	block, err := aes.NewCipher([]byte(MySecret))
+	if err != nil {
+		return "", err
+	}
+
+	plainText := []byte(text)
+	cfb := cipher.NewCFBEncrypter(block, bytess)
+	cipherText := make([]byte, len(plainText))
+	cfb.XORKeyStream(cipherText, plainText)
+
+	return Encode(cipherText), nil
+}
+func Encode(b []byte) string {
+	return base64.StdEncoding.EncodeToString(b)
+}
+func GetSha256(str string) string {
+	m := sha256.New()
+	m.Write([]byte(str))
+	sha256String := hex.EncodeToString(m.Sum(nil))
+	return sha256String
 }
