@@ -1,7 +1,7 @@
 
 package controller
 
-import "education/service"
+import "wu/service"
 
 type Application struct {
 	Setup *service.ServiceSetup
