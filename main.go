@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"education/sdkInit"
-	"education/service"
-	"education/web"
-	"education/web/controller"
+	"wu/sdkInit"
+	"wu/service"
+	"wu/web"
+	"wu/web/controller"
 	"os"
 
 )
@@ -24,7 +24,7 @@ func main() {
 			OrgMspId:      "Org1MSP",
 			OrgUser:       "User1",
 			OrgPeerNum:    1,
-			OrgAnchorFile: os.Getenv("GOPATH") + "/src/education/fixtures/channel-artifacts/Org1MSPanchors.tx",
+			OrgAnchorFile: os.Getenv("GOPATH") + "/src/wu/fixtures/channel-artifacts/Org1MSPanchors.tx",
 		},
 
 	}
@@ -32,13 +32,13 @@ func main() {
 	// init sdk env info
 	info := sdkInit.SdkEnvInfo{
 		ChannelID:        "mychannel",
-		ChannelConfig:    os.Getenv("GOPATH") + "/src/education/fixtures/channel-artifacts/channel.tx",
+		ChannelConfig:    os.Getenv("GOPATH") + "/src/wu/fixtures/channel-artifacts/channel.tx",
 		Orgs:             orgs,
 		OrdererAdminUser: "Admin",
 		OrdererOrgName:   "OrdererOrg",
 		OrdererEndpoint:  "orderer.example.com",
 		ChaincodeID:      cc_name,
-		ChaincodePath:    os.Getenv("GOPATH")+"/src/education/chaincode/",
+		ChaincodePath:    os.Getenv("GOPATH")+"/src/wu/chaincode/",
 		ChaincodeVersion: cc_version,
 	}
 
@@ -68,7 +68,7 @@ func main() {
 		AssetName: "Labor Contract01",
 		OwnerID: "101",
 		State: "valid",
-		Version:"1.0"
+		Version:"1.0",
 		CertNo: "111",
 		Ciphertext: "uQyiNNQr5tZMuNpZqooMkg==",
 		Note: ".......",
