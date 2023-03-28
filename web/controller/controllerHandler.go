@@ -6,7 +6,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/sha256"
-	"wu/service"
+	"education/service"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
