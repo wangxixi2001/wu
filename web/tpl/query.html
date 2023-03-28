@@ -12,31 +12,35 @@
   </head>
   <body>
     <div class="container">
-      <h2>中国高等教育学历证书查询</h2>
+      <h2>Verify data integrity</h2>
       <div id="query">
         <div class="left">
           <form action="/query" method="post" name="queryForm">
               <p>
-                证书编号：
+                  certNo：
                 <input type="text" class="input_text" name="certNo" onfocus="if(this.placeholder=='certNo'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='certNo';this.className ='input_text'}" value="" placeholder="certNo">
               </p>
               <p>
-                姓名：
+                  assetName：
                 <input type="text" class="input_text" name="assetName" onfocus="if(this.placeholder=='assetName'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='assetName';this.className ='input_text'}" value="" placeholder="assetName">
               </p>
               <p>
-                <button type="button" name="button" class="btn">免费查询</button>
+                ciphertext：
+                <input type="text" class="input_text" name="ciphertext" onfocus="if(this.placeholder=='ciphertext'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='ciphertext';this.className ='input_text'}" value="" placeholder="ciphertext">
               </p>
-              <a href="/index">返回首页</a>
-              <a href="/queryPage2">根据Owner查询</a>
+              <p>
+                <button type="button" name="button" class="btn">Verification</button>
+              </p>
+              <a href="/index">return to index</a>
+              <a href="/queryPage2">...</a>
           </form>
         </div>
         <div class="right">
           <p><b>注意</b></p>
-          <p>1、点此查看<a href="./help.html">学历证书查询范围。</a></p>
-          <p>2、查询学历证书需经权属人同意。</p>
-          <p>3、学历证书查询结果不得用于违背权属人意愿之用途。</p>
-          <p>4、学历证书和证明书由各高校自行印制，证书编号通常为18位。不知道证书编号的,可咨询发证学校。</p>
+          <p>1.Click here to view the<a href="./help.html">validation scope.</a></p>
+          <p>2. The verification certificate shall be approved by the owner.</p>
+          <p>3. The verification results shall not be used for purposes contrary to the wishes of the owner.</p>
+          <p>4. The verification certificate and certificate are printed by each individual. If you do not know the certificate number, you can contact the email address.</p>
 
         </div>
       </div>
@@ -46,7 +50,7 @@
               <div class="modal-content">
                   <p class="text-center mb-0" style="height:42px;line-height:42px;margin:0;">
                       <i class="fa fa-check-circle text-success mr-1" aria-hidden="true"></i>
-                      请输入要查询的证书编号及姓名
+                      Please enter the certificate number and assetName to query
                   </p>
               </div>
           </div>
