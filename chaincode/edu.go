@@ -73,7 +73,7 @@ func PutEdu(stub shim.ChaincodeStubInterface, edu Education) ([]byte, bool) {
 	}
 
 	// 保存edu状态
-	err = stub.PutState(edu.EntityID, b)
+	err = stub.PutState(edu.OwnerID, b)
 	if err != nil {
 		return nil, false
 	}
