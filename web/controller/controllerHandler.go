@@ -6,7 +6,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/sha256"
-	"education/service"
+	"wu/service"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
@@ -132,7 +132,7 @@ func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request) {
 	//ShowView(w, r, "addEdu.html", data)
 	r.Form.Set("certNo", edu.CertNo)
 	r.Form.Set("assetName", edu.AssetName)
-	app.FindCertByNoAndName(w, r)
+	app.FindByID(w, r)
 }
 
 func (app *Application) QueryPage(w http.ResponseWriter, r *http.Request) {
@@ -155,16 +155,15 @@ func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Reque
 	name := r.FormValue("assetName")
 	result, err := app.Setup.FindEduByCertNoAndName(certNo, name)
 	var edu = service.Education{}
+	json.Unmarshal(result, &edu)
 	hashValue2 := GetSha256(r.FormValue("ciphertext"))
 	hashValue1, err := Decrypt(edu.Note, MySecret)
 	if err != nil {
 		fmt.Println("error decrypting your encrypted text: ", err)
 	}
+	fmt.Println(edu.Note)
 	if strings.Compare(hashValue2, hashValue1) == 0 {
-		fmt.Println("Content validation succeeded!")
-		json.Unmarshal(result, &edu)
-
-		fmt.Println("根据证书编号与姓名查询信息成功：")
+		fmt.Println("Verification Success!")
 		fmt.Println(edu)
 
 		data := &struct {
@@ -186,9 +185,9 @@ func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Reque
 			data.Flag = true
 		}
 
-		ShowView(w, r, "queryResult.html", data)
+		ShowView(w, r, "verificationSuccess.html", data)
 	} else {
-		fmt.Println("Content validation failed!")
+		fmt.Println("Verification Fail!")
 		data := &struct {
 			Edu         service.Education
 			CurrentUser User
@@ -207,7 +206,7 @@ func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Reque
 			data.Msg = err.Error()
 			data.Flag = true
 		}
-		ShowView(w, r, "help.html", data)
+		ShowView(w, r, "verificationFail.html", data)
 	}
 
 }
