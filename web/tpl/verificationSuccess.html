@@ -20,37 +20,37 @@
             <div class="left">
                 <p>
                     <span>AssetName：</span>
-                    <span>{{.Edu.AssetName}}</span>
+                    <span>{{.Cert.AssetName}}</span>
                 </p>
                 <p>
                     <span>OwnerID：</span>
-                    <span>{{.Edu.OwnerID}}</span>
+                    <span>{{.Cert.OwnerID}}</span>
                 </p>
                 <p>
                     <span>State：</span>
-                    <span>{{.Edu.State}}</span>
+                    <span>{{.Cert.State}}</span>
                 </p>
                 <p>
                     <span>Version：</span>
-                    <span>{{.Edu.Version}}</span>
+                    <span>{{.Cert.Version}}</span>
                 </p>
                 <p>
                     <span>CertNo：</span>
-                    <span>{{.Edu.CertNo}}</span>
+                    <span>{{.Cert.CertNo}}</span>
                 </p>
                 <p>
                     <span>Ciphertext：</span>
-                    <span>{{.Edu.Ciphertext}}</span>
+                    <span>{{.Cert.Ciphertext}}</span>
                 </p>
                 <p>
                     <span>Note：</span>
-                    <span>{{.Edu.Note}}</span>
+                    <span>{{.Cert.Note}}</span>
                 </p>
             </div>
         </div>
         <p>
             {{if eq .CurrentUser.IsAdmin "T"}}
-            <a href="/modifyPage?certNo={{.Edu.CertNo}}&assetName={{.Edu.AssetName}}">Modify Info of this Certification</a>
+            <a href="/modifyPage?certNo={{.Cert.CertNo}}&assetName={{.Cert.AssetName}}">Modify Info of this Certification</a>
             {{end}}
             <a href="/index">Return to Index</a>
         </p>
