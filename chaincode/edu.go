@@ -14,7 +14,7 @@ type Certificate struct {
 	ObjectType string `json:"docType"`
 	AssetName  string `json:"Name"`   // 姓名
 	OwnerID    string `json:"Gender"` // 性别
-	key        string `json:"Key"`
+	Key        string `json:"Key"`
 	State      string `json:"Nation"`     // 民族
 	Version    string `json:"Place"`      // 籍贯
 	CertNo     string `json:"CertNo"`     // 证书编号
