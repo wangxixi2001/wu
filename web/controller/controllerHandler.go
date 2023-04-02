@@ -75,7 +75,7 @@ func (app *Application) LoginOut(w http.ResponseWriter, r *http.Request) {
 }
 
 // 显示添加信息页面
-func (app *Application) AddEduShow(w http.ResponseWriter, r *http.Request) {
+func (app *Application) AddCertShow(w http.ResponseWriter, r *http.Request) {
 	data := &struct {
 		CurrentUser User
 		Msg         string
@@ -85,12 +85,12 @@ func (app *Application) AddEduShow(w http.ResponseWriter, r *http.Request) {
 		Msg:         "",
 		Flag:        false,
 	}
-	ShowView(w, r, "addEdu.html", data)
+	ShowView(w, r, "addCert.html", data)
 }
 
 // 添加信息
-func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request) {
-	const MySecret string = "abc&1*~#^2^#s0^=)^^7%b34"
+func (app *Application) AddCert(w http.ResponseWriter, r *http.Request) {
+	MySecret := r.FormValue("key")
 	hashValue := GetSha256(r.FormValue("ciphertext"))
 	note, err := Encrypt(hashValue, MySecret)
 	if err != nil {
@@ -100,9 +100,10 @@ func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("error encrypting your classified text: ", err)
 	}
-	edu := service.Education{
+	cert := service.Certificate{
 		AssetName:  r.FormValue("assetName"),
 		OwnerID:    r.FormValue("ownerID"),
+		Key:        r.FormValue("key"),
 		State:      r.FormValue("state"),
 		Version:    r.FormValue("version"),
 		CertNo:     r.FormValue("certNo"),
@@ -110,7 +111,7 @@ func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request) {
 		Note:       note,
 	}
 
-	app.Setup.SaveEdu(edu)
+	app.Setup.SaveCert(cert)
 	/*transactionID, err := app.Setup.SaveEdu(edu)
 
 	data := &struct {
@@ -129,9 +130,9 @@ func (app *Application) AddEdu(w http.ResponseWriter, r *http.Request) {
 		data.Msg = "信息添加成功:" + transactionID
 	}*/
 
-	//ShowView(w, r, "addEdu.html", data)
-	r.Form.Set("certNo", edu.CertNo)
-	r.Form.Set("assetName", edu.AssetName)
+	//ShowView(w, r, "addCert.html", data)
+	r.Form.Set("certNo", cert.CertNo)
+	r.Form.Set("assetName", cert.AssetName)
 	app.FindByID(w, r)
 }
 
@@ -150,30 +151,30 @@ func (app *Application) QueryPage(w http.ResponseWriter, r *http.Request) {
 
 // 根据证书编号与姓名查询信息
 func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Request) {
-	const MySecret string = "abc&1*~#^2^#s0^=)^^7%b34"
+	MySecret := r.FormValue("key")
 	certNo := r.FormValue("certNo")
 	name := r.FormValue("assetName")
-	result, err := app.Setup.FindEduByCertNoAndName(certNo, name)
-	var edu = service.Education{}
-	json.Unmarshal(result, &edu)
+	result, err := app.Setup.FindCertByCertNoAndName(certNo, name)
+	var cert = service.Certificate{}
+	json.Unmarshal(result, &cert)
 	hashValue2 := GetSha256(r.FormValue("ciphertext"))
-	hashValue1, err := Decrypt(edu.Note, MySecret)
+	hashValue1, err := Decrypt(cert.Note, MySecret)
 	if err != nil {
 		fmt.Println("error decrypting your encrypted text: ", err)
 	}
-	fmt.Println(edu.Note)
+	fmt.Println(cert.Note)
 	if strings.Compare(hashValue2, hashValue1) == 0 {
 		fmt.Println("Verification Success!")
-		fmt.Println(edu)
+		fmt.Println(cert)
 
 		data := &struct {
-			Edu         service.Education
+			Cert        service.Certificate
 			CurrentUser User
 			Msg         string
 			Flag        bool
 			History     bool
 		}{
-			Edu:         edu,
+			Cert:        cert,
 			CurrentUser: cuser,
 			Msg:         "",
 			Flag:        false,
@@ -189,13 +190,13 @@ func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Reque
 	} else {
 		fmt.Println("Verification Fail!")
 		data := &struct {
-			Edu         service.Education
+			Cert        service.Certificate
 			CurrentUser User
 			Msg         string
 			Flag        bool
 			History     bool
 		}{
-			Edu:         edu,
+			Cert:        cert,
 			CurrentUser: cuser,
 			Msg:         "",
 			Flag:        false,
@@ -227,18 +228,18 @@ func (app *Application) QueryPage2(w http.ResponseWriter, r *http.Request) {
 // 根据身份证号码查询信息
 func (app *Application) FindByID(w http.ResponseWriter, r *http.Request) {
 	ownerID := r.FormValue("ownerID")
-	result, err := app.Setup.FindEduInfoByEntityID(ownerID)
-	var edu = service.Education{}
-	json.Unmarshal(result, &edu)
+	result, err := app.Setup.FindCertInfoByOwnerID(ownerID)
+	var cert = service.Certificate{}
+	json.Unmarshal(result, &cert)
 
 	data := &struct {
-		Edu         service.Education
+		Cert        service.Certificate
 		CurrentUser User
 		Msg         string
 		Flag        bool
 		History     bool
 	}{
-		Edu:         edu,
+		Cert:        cert,
 		CurrentUser: cuser,
 		Msg:         "",
 		Flag:        false,
@@ -258,18 +259,18 @@ func (app *Application) ModifyShow(w http.ResponseWriter, r *http.Request) {
 	// 根据证书编号与姓名查询信息
 	certNo := r.FormValue("certNo")
 	name := r.FormValue("assetName")
-	result, err := app.Setup.FindEduByCertNoAndName(certNo, name)
+	result, err := app.Setup.FindCertByCertNoAndName(certNo, name)
 
-	var edu = service.Education{}
-	json.Unmarshal(result, &edu)
+	var cert = service.Certificate{}
+	json.Unmarshal(result, &cert)
 
 	data := &struct {
-		Edu         service.Education
+		Cert        service.Certificate
 		CurrentUser User
 		Msg         string
 		Flag        bool
 	}{
-		Edu:         edu,
+		Cert:        cert,
 		CurrentUser: cuser,
 		Flag:        true,
 		Msg:         "",
@@ -285,9 +286,10 @@ func (app *Application) ModifyShow(w http.ResponseWriter, r *http.Request) {
 
 // 修改/添加新信息
 func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
-	edu := service.Education{
+	cert := service.Certificate{
 		AssetName:  r.FormValue("assetName"),
 		OwnerID:    r.FormValue("ownerID"),
+		Key:        r.FormValue("key"),
 		State:      r.FormValue("state"),
 		Version:    r.FormValue("version"),
 		CertNo:     r.FormValue("certNo"),
@@ -296,7 +298,7 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//transactionID, err := app.Setup.ModifyEdu(edu)
-	app.Setup.ModifyEdu(edu)
+	app.Setup.ModifyCert(cert)
 
 	/*data := &struct {
 		Edu service.Education
@@ -318,9 +320,8 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	ShowView(w, r, "modify.html", data)
 	*/
 
-	r.Form.Set("certNo", edu.CertNo)
-	r.Form.Set("name", edu.AssetName)
-	app.FindCertByNoAndName(w, r)
+	r.Form.Set("ownerID", cert.OwnerID)
+	app.FindByID(w, r)
 }
 
 var bytess = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
