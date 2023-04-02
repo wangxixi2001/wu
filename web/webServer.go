@@ -25,8 +25,8 @@ func WebStart(app controller.Application) {
 	http.HandleFunc("/index", app.Index)
 	http.HandleFunc("/help", app.Help)
 
-	http.HandleFunc("/addEduInfo", app.AddCertShow) // 显示添加信息页面
-	http.HandleFunc("/addEdu", app.AddCert)         // 提交信息请求
+	http.HandleFunc("/addCertInfo", app.AddCertShow) // 显示添加信息页面
+	http.HandleFunc("/addCert", app.AddCert)         // 提交信息请求
 
 	http.HandleFunc("/queryPage", app.QueryPage)       // 转至根据证书编号与姓名查询信息页面
 	http.HandleFunc("/query", app.FindCertByNoAndName) // 根据证书编号与姓名查询信息
