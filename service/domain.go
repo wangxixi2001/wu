@@ -10,27 +10,28 @@ import (
 	"wu/sdkInit"
 )
 
-type Education struct {
-	ObjectType	string	`json:"docType"`
-	AssetName	string	`json:"Name"`		// 姓名
-	OwnerID	string	`json:"Gender"`		// 性别
-	State	string	`json:"Nation"`		// 民族
-	Version	string	`json:"Place"`		// 籍贯
-	CertNo	string	`json:"CertNo"`	// 证书编号
-        Ciphertext	string	`json:"Graduation"`	// 毕（结）业
-	Note	string	`json:"Photo"`	// 照片
+type Certificate struct {
+	ObjectType string `json:"docType"`
+	AssetName  string `json:"Name"`   // 姓名
+	OwnerID    string `json:"Gender"` // 性别
+	Key        string `json:"Key"`
+	State      string `json:"Nation"`     // 民族
+	Version    string `json:"Place"`      // 籍贯
+	CertNo     string `json:"CertNo"`     // 证书编号
+	Ciphertext string `json:"Graduation"` // 毕（结）业
+	Note       string `json:"Photo"`      // 照片
 
-	Historys	[]HistoryItem	// 当前edu的历史记录
+	Historys []HistoryItem // 当前edu的历史记录
 }
 
 type HistoryItem struct {
-	TxId	string
-	Education	Education
+	TxId        string
+	Certificate Certificate
 }
 
 type ServiceSetup struct {
-	ChaincodeID	string
-	Client	*channel.Client
+	ChaincodeID string
+	Client      *channel.Client
 }
 
 func regitserEvent(client *channel.Client, chaincodeID, eventID string) (fab.Registration, <-chan *fab.CCEvent) {
@@ -54,7 +55,7 @@ func eventResult(notifier <-chan *fab.CCEvent, eventID string) error {
 
 func InitService(chaincodeID, channelID string, org *sdkInit.OrgInfo, sdk *fabsdk.FabricSDK) (*ServiceSetup, error) {
 	handler := &ServiceSetup{
-		ChaincodeID:chaincodeID,
+		ChaincodeID: chaincodeID,
 	}
 	//prepare channel client context using client context
 	clientChannelContext := sdk.ChannelContext(channelID, fabsdk.WithUser(org.OrgUser), fabsdk.WithOrg(org.OrgName))
