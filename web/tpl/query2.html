@@ -12,24 +12,24 @@
   </head>
   <body>
     <div class="container">
-      <h2>中国高等教育学历证书查询</h2>
+      <h2>Digital Certification Query</h2>
       <div id="query">
             <div class="left">
               <form action="/query2" method="post" name="queryForm">
                 <p>
-                  身份证号码：
-                  <!-- <input type="text" name="" value="" placeholder="绑定学历证书的身份证号码" maxlength="18"> -->
-                  <input type="text" class="input_text" name="entityID" onfocus="if(this.placeholder=='绑定学历证书的身份证号码'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='绑定学历证书的身份证号码';this.className ='input_text'}" value="" placeholder="绑定学历证书的身份证号码" maxlength="18">
+                  OwnerID：
+                  <!-- <input type="text" name="" value="" placeholder="OwnerID of bound certificate" maxlength="18"> -->
+                  <input type="text" class="input_text" name="ownerID" onfocus="if(this.placeholder=='OwnerID of bound certificate'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='OwnerID of bound certificate';this.className ='input_text'}" value="" placeholder="OwnerID of bound certificate" maxlength="18">
                 </p>
-                <!-- <p>
-                  姓名：
-                  <input type="text" name="" value="" placeholder="学历证书或学历证明书上的姓名">
-                </p> -->
                 <p>
-                  <button type="button" name="button" class="btn">免费查询</button>
+                  AssetName：
+                  <input type="text" class="input_text" name="assetName" onfocus="if(this.placeholder=='AssetName'){this.placeholder='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.placeholder='AssetName';this.className ='input_text'}" value="" placeholder="OwnerID of bound certificate" maxlength="18">
                 </p>
-                <a href="/index">返回首页</a>
-                <a href="/queryPage">根据证书编号查询</a>
+                <p>
+                  <button type="button" name="button" class="btn">Free Query</button>
+                </p>
+                <a href="/index">Return Index</a>
+                <a href="/queryPage">Verification</a>
               </form>
             </div>
         <div class="right">
@@ -47,7 +47,7 @@
               <div class="modal-content">
                   <p class="text-center mb-0" style="height:42px;line-height:42px;margin:0;">
                       <i class="fa fa-check-circle text-success mr-1" aria-hidden="true"></i>
-                      请输入要查询的身份证号码
+                      Pelease enter the OwnerId and AssetName
                   </p>
               </div>
           </div>
