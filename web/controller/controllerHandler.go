@@ -227,9 +227,9 @@ func (app *Application) QueryPage2(w http.ResponseWriter, r *http.Request) {
 
 // 根据身份证号码查询信息
 func (app *Application) FindByID(w http.ResponseWriter, r *http.Request) {
-	ownerID := r.FormValue("ownerID")
+	certNo := r.FormValue("certNo")
 	assetName := r.FormValue("assetName")
-	result, err := app.Setup.FindCertInfoByOwnerID(ownerID, assetName)
+	result, err := app.Setup.FindCertByCertNoAndName(certNo, assetName)
 	var cert = service.Certificate{}
 	json.Unmarshal(result, &cert)
 
