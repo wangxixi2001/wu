@@ -15,7 +15,7 @@
 <body>
 <div class="container">
     <div class="queryResule">
-        <h2>修改高等教育学历信息</h2>
+        <h2>Modify CertInfo</h2>
         <div class="back">
           {{if eq .CurrentUser.IsAdmin "T"}}
               <a href="/addCertInfo">AddInfo</a>
@@ -71,17 +71,9 @@
               </div>
 
             <div class="headImg">
-                <div class="uploadImg">
-                    <input type="file" name="" value="上传照片" id="file">
-                    +
-                    <!-- <img src="./images/head.jpg" alt=""> -->
-                    <img src="{{.Edu.Photo}}" alt="">
-                </div>
-                <p>上传照片(120*160px)</p>
             </div>
         </div>
-        <input type="hidden" name="photo" id="photo" value="{{.Edu.Photo}}"/>
-        <button type="button" name="button" class="btn">修改学历信息</button>
+        <button type="button" name="button" class="btn">Modify</button>
         </form>
     </div>
     <!-- data-backdrop="false"去除遮罩层  -->
@@ -90,7 +82,7 @@
             <div class="modal-content">
                 <p class="text-center mb-0" style="height:42px;line-height:42px;margin:0;">
                     <i class="fa fa-check-circle text-success mr-1" aria-hidden="true"></i>
-                    请输入学历所必需的相关信息
+                    Please enter all neccessary Cert information.
                 </p>
             </div>
         </div>
