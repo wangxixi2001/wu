@@ -81,7 +81,7 @@ func PutCert(stub shim.ChaincodeStubInterface, cert Certificate) ([]byte, bool) 
 }
 
 // 根据身份证号码查询信息状态
-// args: entityID
+
 func GetCertInfo(stub shim.ChaincodeStubInterface, ownerID string) (Certificate, bool) {
 	var cert Certificate
 	// 根据身份证号码查询信息状态
@@ -198,66 +198,24 @@ func (t *CertificateChaincode) queryCertByCertNoAndName(stub shim.ChaincodeStubI
 }
 
 // 根据身份证号码查询详情（溯源）
-// args: entityID
 func (t *CertificateChaincode) queryCertInfoByOwnerID(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-	if len(args) != 1 {
+	if len(args) != 2 {
 		return shim.Error("给定的参数个数不符合要求")
 	}
+	OwnerID := args[0]
+	AssetName := args[1]
 
-	// 根据身份证号码查询edu状态
-	b, err := stub.GetState(args[0])
+	// 拼装CouchDB所需要的查询字符串(是标准的一个JSON串)
+	// queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"eduObj\", \"CertNo\":\"%s\"}}", CertNo)
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\", \"OwnerID\":\"%s\", \"Name\":\"%s\"}}", DOC_TYPE, OwnerID, AssetName)
+
+	// 查询数据
+	result, err := getCertByQueryString(stub, queryString)
 	if err != nil {
-		return shim.Error("根据身份证号码查询信息失败")
+		return shim.Error("根据AssetName及OwnerID查询信息时发生错误")
 	}
-
-	if b == nil {
-		return shim.Error("根据身份证号码没有查询到相关的信息")
-	}
-
-	// 对查询到的状态进行反序列化
-	var cert Certificate
-	err = json.Unmarshal(b, &cert)
-	if err != nil {
-		return shim.Error("反序列化edu信息失败")
-	}
-
-	// 获取历史变更数据
-	iterator, err := stub.GetHistoryForKey(cert.OwnerID)
-	if err != nil {
-		return shim.Error("根据指定的身份证号码查询对应的历史变更数据失败")
-	}
-	defer iterator.Close()
-
-	// 迭代处理
-	var historys []HistoryItem
-	var hisCert Certificate
-	for iterator.HasNext() {
-		hisData, err := iterator.Next()
-		if err != nil {
-			return shim.Error("获取edu的历史变更数据失败")
-		}
-
-		var historyItem HistoryItem
-		historyItem.TxId = hisData.TxId
-		json.Unmarshal(hisData.Value, &hisCert)
-
-		if hisData.Value == nil {
-			var empty Certificate
-			historyItem.Certificate = empty
-		} else {
-			historyItem.Certificate = hisCert
-		}
-
-		historys = append(historys, historyItem)
-
-	}
-
-	cert.Historys = historys
-
-	// 返回
-	result, err := json.Marshal(cert)
-	if err != nil {
-		return shim.Error("序列化edu信息时发生错误")
+	if result == nil {
+		return shim.Error("根据指定的OwnerID及AssetName称没有查询到相关的信息")
 	}
 	return shim.Success(result)
 }
