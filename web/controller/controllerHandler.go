@@ -321,7 +321,8 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 	ShowView(w, r, "modify.html", data)
 	*/
 
-	r.Form.Set("ownerID", cert.OwnerID)
+	r.Form.Set("certNo", cert.CertNo)
+	r.Form.Set("assetName", cert.AssetName)
 	app.FindByID(w, r)
 }
 
