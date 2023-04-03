@@ -32,9 +32,9 @@ func (t *ServiceSetup) SaveCert(cert Certificate) (string, error) {
 	return string(respone.TransactionID), nil
 }
 
-func (t *ServiceSetup) FindCertInfoByOwnerID(ownerID string) ([]byte, error) {
+func (t *ServiceSetup) FindCertInfoByOwnerID(ownerID, assetName string) ([]byte, error) {
 
-	req := channel.Request{ChaincodeID: t.ChaincodeID, Fcn: "queryCertInfoByOwnerID", Args: [][]byte{[]byte(ownerID)}}
+	req := channel.Request{ChaincodeID: t.ChaincodeID, Fcn: "queryCertInfoByOwnerID", Args: [][]byte{[]byte(ownerID), []byte(assetName)}}
 	respone, err := t.Client.Query(req)
 	if err != nil {
 		return []byte{0x00}, err
