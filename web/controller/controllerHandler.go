@@ -297,30 +297,7 @@ func (app *Application) Modify(w http.ResponseWriter, r *http.Request) {
 		Ciphertext: r.FormValue("ciphertext"),
 		Note:       r.FormValue("note"),
 	}
-
-	//transactionID, err := app.Setup.ModifyEdu(edu)
 	app.Setup.ModifyCert(cert)
-
-	/*data := &struct {
-		Edu service.Education
-		CurrentUser User
-		Msg string
-		Flag bool
-	}{
-		CurrentUser:cuser,
-		Flag:true,
-		Msg:"",
-	}
-
-	if err != nil {
-		data.Msg = err.Error()
-	}else{
-		data.Msg = "新信息添加成功:" + transactionID
-	}
-
-	ShowView(w, r, "modify.html", data)
-	*/
-
 	r.Form.Set("certNo", cert.CertNo)
 	r.Form.Set("assetName", cert.AssetName)
 	app.FindByID(w, r)
