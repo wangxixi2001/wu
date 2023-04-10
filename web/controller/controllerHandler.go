@@ -157,7 +157,7 @@ func (app *Application) FindCertByNoAndName(w http.ResponseWriter, r *http.Reque
 	result, err := app.Setup.FindCertByCertNoAndName(certNo, name)
 	var cert = service.Certificate{}
 	json.Unmarshal(result, &cert)
-	hashValue2 := GetSha256(r.FormValue("ciphertext"))
+	hashValue2 := GetSha256(r.FormValue("plaintext"))
 	hashValue1, err := Decrypt(cert.Note, MySecret)
 	if err != nil {
 		fmt.Println("error decrypting your encrypted text: ", err)
