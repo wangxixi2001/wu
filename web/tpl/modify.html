@@ -17,9 +17,7 @@
     <div class="queryResule">
         <h2>Modify CertInfo</h2>
         <div class="back">
-          {{if eq .CurrentUser.IsAdmin "T"}}
               <a href="/addCertInfo">AddInfo</a>
-          {{end}}
             <a href="/index">Return Index</a>
         </div>
         <form action="/modify" method="post" name="modifyForm">
