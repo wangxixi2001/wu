@@ -60,7 +60,7 @@ func (t *ServiceSetup) ModifyCert(cert Certificate) (string, error) {
 	reg, notifier := regitserEvent(t.Client, t.ChaincodeID, eventID)
 	defer t.Client.UnregisterChaincodeEvent(reg)
 
-	// 将edu对象序列化成为字节数组
+	// Serialize cert objects into byte arrays
 	b, err := json.Marshal(cert)
 	if err != nil {
 		return "", fmt.Errorf("Error while serialising the specified cert object")
