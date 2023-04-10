@@ -15,8 +15,8 @@
   {{if .Flag}}
   <div id="popout">
       <div class="popout">
-          <div class="">用户名或密码输入错误!请重新输入</div>
-          <p><button type="button" name="button">好的</button></p>
+          <div class="">User name or password input error! Please re-enter!</div>
+          <p><button type="button" name="button">OK</button></p>
       </div>
   </div>
   {{end}}
@@ -25,20 +25,20 @@
         <div class="width1200">
 
           <div class="login-box-my">
-            <h2>登录</h2>
-            <p>请使用
-              <a href="#" target="_blank"><b>账号</b> </a>进行登录</p>
+            <h2>Login</h2>
+            <p>Please use
+              <a href="#" target="_blank"><b>username</b> </a>to login</p>
             <div class="cr_top_my">
               <form id="fm1" action="/login" method="post" autocomplete="off">
                 <div class="ct_input">
                   <span class="ct_img_yhm">&nbsp;</span>
-                  <input id="username" name="loginName" class="input_text" tabindex="1" onfocus="if(this.value=='手机号/身份证号/邮箱'){this.value='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.value='手机号/身份证号/邮箱';this.className ='input_text'}" accesskey="n" type="text" value="手机号/身份证号/邮箱" size="25" autocomplete="off">
+                  <input id="username" name="loginName" class="input_text" tabindex="1" onfocus="if(this.value=='loginName'){this.value='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.value='loginName';this.className ='input_text'}" accesskey="n" type="text" value="loginName" size="25" autocomplete="off">
                 </div>
                 <div class="ct_input">
                   <span class="ct_img_mm">&nbsp;</span>
-                  <input id="password" name="password" class="input_text" tabindex="2" onfocus="if(this.value=='密码'){this.value='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.value='密码';this.className ='input_text'}" accesskey="n" type="text" value="密码" size="25" autocomplete="off">
+                  <input id="password" name="password" class="input_text" tabindex="2" onfocus="if(this.value=='password'){this.value='';}this.className ='input_text input_text_focus'" onblur="if(this.value==''){this.value='password';this.className ='input_text'}" accesskey="n" type="text" value="password" size="25" autocomplete="off">
                 </div>
-                <input class="btn_login btn_login_my" name="submit" accesskey="l" value="登&nbsp;&nbsp;录" tabindex="3" type="submit" title="登录">
+                <input class="btn_login btn_login_my" name="submit" accesskey="l" value="Login" tabindex="3" type="submit" title="Login">
               </form>
             </div>
           </div>
