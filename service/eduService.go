@@ -63,7 +63,7 @@ func (t *ServiceSetup) ModifyCert(cert Certificate) (string, error) {
 	// 将edu对象序列化成为字节数组
 	b, err := json.Marshal(cert)
 	if err != nil {
-		return "", fmt.Errorf("指定的edu对象序列化时发生错误")
+		return "", fmt.Errorf("Error while serialising the specified cert object")
 	}
 
 	req := channel.Request{ChaincodeID: t.ChaincodeID, Fcn: "updateCert", Args: [][]byte{b, []byte(eventID)}}
