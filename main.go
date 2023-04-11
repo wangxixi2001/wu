@@ -87,7 +87,7 @@ func main() {
 		fmt.Println("信息发布成功, 交易编号为: " + msg)
 	}
 
-	result, err := serviceSetup.FindCertInfoByOwnerID("101")
+	result, err := serviceSetup.FindCertInfoByOwnerID("101","Labor Contract01")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
