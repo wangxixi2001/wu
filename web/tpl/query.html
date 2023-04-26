@@ -48,7 +48,6 @@
 
         </div>
       </div>
-      <!-- data-backdrop="false"去除遮罩层  -->
       <div class="modal fade bd-example-modal-sm"  id="myModal" role="dialog" data-backdrop="false"  aria-hidden="true">
           <div class="modal-dialog modal-sm">
               <div class="modal-content">
@@ -66,9 +65,9 @@
   <script type="text/javascript">
     $(function() {
       var inputs = $('input[type="text"]');
-      // 提交按钮
+      // Submit button
       $('.btn').click(function() {
-        // 如果为空 报错提示
+        // If it is empty, an error message will be displayed
         for (var i = 0; i < inputs.length; i++) {
           if (!($(inputs[i]).val())) {
             $(inputs[i]).addClass('redColor');
@@ -80,7 +79,7 @@
           }
         }
 
-        // 成功后提交数据
+        // upload data after success
         $("form[name='queryForm']").submit()
       })
     })
