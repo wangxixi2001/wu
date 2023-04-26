@@ -12,10 +12,10 @@ func (t *ServiceSetup) SaveCert(cert Certificate) (string, error) {
 	reg, notifier := regitserEvent(t.Client, t.ChaincodeID, eventID)
 	defer t.Client.UnregisterChaincodeEvent(reg)
 
-	// 将edu对象序列化成为字节数组
+	// Serialising objects into byte arrays
 	b, err := json.Marshal(cert)
 	if err != nil {
-		return "", fmt.Errorf("指定的edu对象序列化时发生错误")
+		return "", fmt.Errorf("Error on serialisation of the specified object")
 	}
 
 	req := channel.Request{ChaincodeID: t.ChaincodeID, Fcn: "addCert", Args: [][]byte{b, []byte(eventID)}}
