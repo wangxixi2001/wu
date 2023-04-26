@@ -3,6 +3,6 @@ sudo docker network prune
 sudo docker volume prune
 cd fixtures && docker-compose up -d
 cd ..
-rm education
+rm certificate
 go build
-./education
+./certificate
