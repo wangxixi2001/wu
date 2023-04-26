@@ -1,4 +1,4 @@
-# education
+# certificate
 将`GOPATH`设置为`/root/go`,拉取项目：
 ```
 cd $GOPATH/src && git clone https://github.com/wangxixi2001/wu.git
