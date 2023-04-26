@@ -50,10 +50,7 @@ func (t *CertificateChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Res
 		return t.queryCertInfoByOwnerID(stub, args) // 根据身份证号码及姓名查询详情
 	} else if fun == "updateCert" {
 		return t.updateCert(stub, args) // 根据证书编号更新信息
-	} else if fun == "delCert" {
-		return t.delCert(stub, args) // 根据证书编号删除信息
-	}
-
+	} 
 	return shim.Error("指定的函数名称错误")
 
 }
