@@ -62,7 +62,7 @@ func main() {
 	}
 
 	// invoke chaincode set status
-	fmt.Println(">> 通过链码外部服务设置链码状态......")
+	fmt.Println(">> Setting the chain code status via the chain code external service ......")
 
 	cert := service.Certificate{
 		AssetName:  "Labor Contract01",
@@ -84,17 +84,17 @@ func main() {
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Println("信息发布成功, 交易编号为: " + msg)
+		fmt.Println("The message was successfully posted with the transaction number: " + msg)
 	}
 
-	result, err := serviceSetup.FindCertInfoByOwnerID("101","Labor Contract01")
+	result, err := serviceSetup.FindCertByCertNoAndName("101","Labor Contract01")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		var edu service.Certificate
-		json.Unmarshal(result, &edu)
+		var cert service.Certificate
+		json.Unmarshal(result, &cert)
 		fmt.Println("OwnerID query info success：")
-		fmt.Println(edu)
+		fmt.Println(cert)
 	}
 
 	app := controller.Application{
