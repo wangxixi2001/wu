@@ -255,4 +255,9 @@ func (t *CertificateChaincode) updateCert(stub shim.ChaincodeStubInterface, args
 	return shim.Success([]byte("信息更新成功"))
 }
 
-
+func main() {
+	err := shim.Start(new(CertificateChaincode))
+	if err != nil {
+		fmt.Printf("启动EducationChaincode时发生错误: %s", err)
+	}
+}
