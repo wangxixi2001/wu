@@ -39,7 +39,7 @@ func Setup(configFile string, info *SdkEnvInfo) (*fabsdk.FabricSDK, error) {
 		// New returns a resource management client instance.
 		resMgmtClient, err := resmgmt.New(orgContext)
 		if err != nil {
-			return nil, fmt.Errorf("根据指定的资源管理客户端Context创建通道管理客户端失败: %v", err)
+			return nil, fmt.Errorf("Failure to create a channel management client based on the specified Resource Management Client Context: %v", err)
 		}
 		org.OrgResMgmt = resMgmtClient
 	}
@@ -51,9 +51,9 @@ func Setup(configFile string, info *SdkEnvInfo) (*fabsdk.FabricSDK, error) {
 }
 
 func CreateAndJoinChannel(info *SdkEnvInfo) error {
-	fmt.Println(">> 开始创建通道......")
+	fmt.Println(">> Start creating channels at ......")
 	if len(info.Orgs) == 0 {
-		return fmt.Errorf("通道组织不能为空，请提供组织信息")
+		return fmt.Errorf("Channel organisation cannot be empty, please provide organisation information")
 	}
 
 	// 获得所有组织的签名信息
@@ -72,9 +72,9 @@ func CreateAndJoinChannel(info *SdkEnvInfo) error {
 		return fmt.Errorf("Create channel error: %v", err)
 	}
 
-	fmt.Println(">> 创建通道成功")
+	fmt.Println(">> Channel created successfully")
 
-	fmt.Println(">> 加入通道......")
+	fmt.Println(">> Join the channel at ......")
 	for _, org := range info.Orgs {
 		// 加入通道
 		// Org peers join channel
@@ -82,7 +82,7 @@ func CreateAndJoinChannel(info *SdkEnvInfo) error {
 			return fmt.Errorf("%s peers failed to JoinChannel: %v", org.OrgName, err)
 		}
 	}
-	fmt.Println(">> 加入通道成功")
+	fmt.Println(">> Join the channel successfully")
 	return nil
 }
 
@@ -102,7 +102,7 @@ func createChannel(signIDs []msp.SigningIdentity, info *SdkEnvInfo) error {
 		return fmt.Errorf("error should be nil for SaveChannel of orgchannel: %v", err)
 	}
 
-	fmt.Println(">>>> 使用每个org的管理员身份更新锚节点配置...")
+	fmt.Println(">>>> Update the anchor node configuration using each org's administrator status...")
 	//do the same get ch client and create channel for each anchor peer as well (first for Org1MSP)
 	for i, org := range info.Orgs {
 		req = resmgmt.SaveChannelRequest{ChannelID: info.ChannelID,
@@ -113,7 +113,7 @@ func createChannel(signIDs []msp.SigningIdentity, info *SdkEnvInfo) error {
 			return fmt.Errorf("SaveChannel for anchor org %s error: %v", org.OrgName, err)
 		}
 	}
-	fmt.Println(">>>> 使用每个org的管理员身份更新锚节点配置完成")
+	fmt.Println(">>>> Update the anchor node configuration using the administrator identity of each org to complete")
 	//integration.WaitForOrdererConfigUpdate(t, configQueryClient, mc.channelID, false, lastConfigBlock)
 	return nil
 }
@@ -123,16 +123,16 @@ func CreateCCLifecycle(info *SdkEnvInfo, sequence int64, upgrade bool, sdk *fabs
 		return fmt.Errorf("the number of organization should not be zero.")
 	}
 	// Package cc
-	fmt.Println(">> 开始打包链码......")
+	fmt.Println(">> Start packing chain code ......")
 	label, ccPkg, err := packageCC(info.ChaincodeID, info.ChaincodeVersion, info.ChaincodePath)
 	if err != nil {
 		return fmt.Errorf("pakcagecc error: %v", err)
 	}
 	packageID := lcpackager.ComputePackageID(label, ccPkg)
-	fmt.Println(">> 打包链码成功")
+	fmt.Println(">> Packed Chain Code Success")
 
 	// Install cc
-	fmt.Println(">> 开始安装链码......")
+	fmt.Println(">> Start installing the chain code ......")
 	if err := installCC(label, ccPkg, info.Orgs); err != nil {
 		return fmt.Errorf("installCC error: %v", err)
 	}
@@ -146,10 +146,10 @@ func CreateCCLifecycle(info *SdkEnvInfo, sequence int64, upgrade bool, sdk *fabs
 	if err := queryInstalled(packageID, info.Orgs[0]); err != nil {
 		return fmt.Errorf("queryInstalled error: %v", err)
 	}
-	fmt.Println(">> 安装链码成功")
+	fmt.Println(">> Chain code installed successfully")
 
 	// Approve cc
-	fmt.Println(">> 组织认可智能合约定义......")
+	fmt.Println(">> Organisation endorsement of smart contract definitions ......")
 	if err := approveCC(packageID, info.ChaincodeID, info.ChaincodeVersion, sequence, info.ChannelID, info.Orgs, info.OrdererEndpoint); err != nil {
 		return fmt.Errorf("approveCC error: %v", err)
 	}
@@ -158,17 +158,17 @@ func CreateCCLifecycle(info *SdkEnvInfo, sequence int64, upgrade bool, sdk *fabs
 	if err:=queryApprovedCC(info.ChaincodeID, sequence, info.ChannelID, info.Orgs);err!=nil{
 		return fmt.Errorf("queryApprovedCC error: %v", err)
 	}
-	fmt.Println(">> 组织认可智能合约定义完成")
+	fmt.Println(">> Organisation endorses smart contract definition completion")
 
 	// Check commit readiness
-	fmt.Println(">> 检查智能合约是否就绪......")
+	fmt.Println(">> Check if the smart contract is ready ......")
 	if err:=checkCCCommitReadiness(packageID, info.ChaincodeID, info.ChaincodeVersion, sequence, info.ChannelID, info.Orgs); err!=nil{
 		return fmt.Errorf("checkCCCommitReadiness error: %v", err)
 	}
-	fmt.Println(">> 智能合约已经就绪")
+	fmt.Println(">> Smart contracts are ready")
 
 	// Commit cc
-	fmt.Println(">> 提交智能合约定义......")
+	fmt.Println(">> Submit a smart contract definition ......")
 	if err:=commitCC(info.ChaincodeID, info.ChaincodeVersion, sequence, info.ChannelID, info.Orgs, info.OrdererEndpoint);err!=nil{
 		return fmt.Errorf("commitCC error: %v", err)
 	}
@@ -176,14 +176,14 @@ func CreateCCLifecycle(info *SdkEnvInfo, sequence int64, upgrade bool, sdk *fabs
 	if err:=queryCommittedCC(info.ChaincodeID, info.ChannelID, sequence, info.Orgs); err!=nil{
 		return fmt.Errorf("queryCommittedCC error: %v", err)
 	}
-	fmt.Println(">> 智能合约定义提交完成")
+	fmt.Println(">> Smart contract definition submission complete")
 
 	// Init cc
-	fmt.Println(">> 调用智能合约初始化方法......")
+	fmt.Println(">> Calling the smart contract initialization method ......")
 	if err:=initCC(info.ChaincodeID, upgrade, info.ChannelID, info.Orgs[0], sdk); err!=nil{
 		return fmt.Errorf("initCC error: %v", err)
 	}
-	fmt.Println(">> 完成智能合约初始化")
+	fmt.Println(">> Complete smart contract initialization")
 	return nil
 }
 
