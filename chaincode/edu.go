@@ -12,16 +12,16 @@ import (
 
 type Certificate struct {
 	ObjectType string `json:"docType"`
-	AssetName  string `json:"Name"`   // 姓名
-	OwnerID    string `json:"Gender"` // 性别
+	AssetName  string `json:"Name"`   
+	OwnerID    string `json:"Gender"` 
 	Key        string `json:"Key"`
-	State      string `json:"Nation"`     // 民族
-	Version    string `json:"Place"`      // 籍贯
-	CertNo     string `json:"CertNo"`     // 证书编号
-	Ciphertext string `json:"Graduation"` // 毕（结）业
-	Note       string `json:"Photo"`      // 照片
+	State      string `json:"Nation"`     
+	Version    string `json:"Place"`     
+	CertNo     string `json:"CertNo"`     
+	Ciphertext string `json:"Graduation"` 
+	Note       string `json:"Photo"`     
 
-	Historys []HistoryItem // 当前edu的历史记录
+	Historys []HistoryItem 
 }
 
 type HistoryItem struct {
@@ -60,8 +60,8 @@ func (t *CertificateChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Res
 
 const DOC_TYPE = "eduObj"
 
-// 保存edu
-// args: education
+// 保存Certificate
+// args: Certificate
 func PutCert(stub shim.ChaincodeStubInterface, cert Certificate) ([]byte, bool) {
 
 	cert.ObjectType = DOC_TYPE
@@ -71,7 +71,7 @@ func PutCert(stub shim.ChaincodeStubInterface, cert Certificate) ([]byte, bool) 
 		return nil, false
 	}
 
-	// 保存edu状态
+	// 保存Certificate状态
 	err = stub.PutState(cert.OwnerID, b)
 	if err != nil {
 		return nil, false
@@ -80,7 +80,7 @@ func PutCert(stub shim.ChaincodeStubInterface, cert Certificate) ([]byte, bool) 
 	return b, true
 }
 
-// 根据身份证号码查询信息状态
+
 
 func GetCertInfo(stub shim.ChaincodeStubInterface, ownerID string) (Certificate, bool) {
 	var cert Certificate
@@ -139,8 +139,6 @@ func getCertByQueryString(stub shim.ChaincodeStubInterface, queryString string) 
 }
 
 // 添加信息
-// args: educationObject
-// 身份证号为 key, Education 为 value
 func (t *CertificateChaincode) addCert(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	if len(args) != 2 {
@@ -221,7 +219,6 @@ func (t *CertificateChaincode) queryCertInfoByOwnerID(stub shim.ChaincodeStubInt
 }
 
 // 根据身份证号更新信息
-// args: educationObject
 func (t *CertificateChaincode) updateCert(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	if len(args) != 2 {
 		return shim.Error("给定的参数个数不符合要求")
@@ -261,36 +258,4 @@ func (t *CertificateChaincode) updateCert(stub shim.ChaincodeStubInterface, args
 	return shim.Success([]byte("信息更新成功"))
 }
 
-// 根据身份证号删除信息（暂不提供）
-// args: entityID
-func (t *CertificateChaincode) delCert(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-	if len(args) != 2 {
-		return shim.Error("给定的参数个数不符合要求")
-	}
 
-	/*var edu Education
-	result, bl := GetEduInfo(stub, info.EntityID)
-	err := json.Unmarshal(result, &edu)
-	if err != nil {
-		return shim.Error("反序列化信息时发生错误")
-	}*/
-
-	err := stub.DelState(args[0])
-	if err != nil {
-		return shim.Error("删除信息时发生错误")
-	}
-
-	err = stub.SetEvent(args[1], []byte{})
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success([]byte("信息删除成功"))
-}
-
-func main() {
-	err := shim.Start(new(CertificateChaincode))
-	if err != nil {
-		fmt.Printf("启动EducationChaincode时发生错误: %s", err)
-	}
-}
