@@ -1,20 +1,20 @@
 # certificate
-将`GOPATH`设置为`/root/go`,拉取项目：
+Set 'GOPATH' to '/root/go' and pull the project：
 ```
 cd $GOPATH/src && git clone https://github.com/wangxixi2001/wu.git
 ```
-在`/etc/hosts`中添加：
+Add in '/etc/hosts'：
 ```
 127.0.0.1  orderer.example.com
 127.0.0.1  peer0.org1.example.com
 127.0.0.1  peer1.org1.example.com
 ```
-添加依赖：
+Add Dependency：
 ```
 cd wu && go mod tidy
 ```
-运行项目：
+Run Project：
 ```
 ./clean_docker.sh
 ```
-在`127.0.0.1:9000`进行访问
+Accessing at '127.0.0.1:9000'
