@@ -12,16 +12,16 @@ import (
 
 type Certificate struct {
 	ObjectType string `json:"docType"`
-	AssetName  string `json:"Name"`   // 姓名
-	OwnerID    string `json:"Gender"` // 性别
+	AssetName  string `json:"Name"`  
+	OwnerID    string `json:"Gender"` 
 	Key        string `json:"Key"`
-	State      string `json:"Nation"`     // 民族
-	Version    string `json:"Place"`      // 籍贯
-	CertNo     string `json:"CertNo"`     // 证书编号
-	Ciphertext string `json:"Graduation"` // 毕（结）业
-	Note       string `json:"Photo"`      // 照片
+	State      string `json:"Nation"`    
+	Version    string `json:"Place"`      
+	CertNo     string `json:"CertNo"`     
+	Ciphertext string `json:"Graduation"` 
+	Note       string `json:"Photo"`      
 
-	Historys []HistoryItem // 当前edu的历史记录
+	Historys []HistoryItem 
 }
 
 type HistoryItem struct {
@@ -38,7 +38,7 @@ func regitserEvent(client *channel.Client, chaincodeID, eventID string) (fab.Reg
 
 	reg, notifier, err := client.RegisterChaincodeEvent(chaincodeID, eventID)
 	if err != nil {
-		fmt.Println("注册链码事件失败: %s", err)
+		fmt.Println("Registration Chain Code Event Failure: %s", err)
 	}
 	return reg, notifier
 }
@@ -46,9 +46,9 @@ func regitserEvent(client *channel.Client, chaincodeID, eventID string) (fab.Reg
 func eventResult(notifier <-chan *fab.CCEvent, eventID string) error {
 	select {
 	case ccEvent := <-notifier:
-		fmt.Printf("接收到链码事件: %v\n", ccEvent)
+		fmt.Printf("Receiving a chain code event: %v\n", ccEvent)
 	case <-time.After(time.Second * 20):
-		return fmt.Errorf("不能根据指定的事件ID接收到相应的链码事件(%s)", eventID)
+		return fmt.Errorf("The corresponding chain code event cannot be received based on the specified event ID(%s)", eventID)
 	}
 	return nil
 }
