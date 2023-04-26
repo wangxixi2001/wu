@@ -33,12 +33,10 @@
                 <span class="icon_list">&nbsp;</span>
                 <a href="/queryPage2">Query Cert according to OwnerID</a>
             </li>
-            {{if eq .CurrentUser.IsAdmin "T"}}
             <li class="leftMenu3">
                 <span class="icon_list">&nbsp;</span>
                 <a href="/addEduInfo">Add Digital Cert</a>
             </li>
-            {{end}}
             <li class="leftMenu5">
                 <span class="icon_list">&nbsp;</span>
                 <a href="/index">Return</a>
@@ -92,9 +90,9 @@
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript">
     $(function() {
-        // 内容
+        // content
         var divs = $('#rightCnt>div');
-        // 点击事件
+        // click event
         for (var i = 0; i < divs.length; i++) {
             (function(i) {
                 $('#leftMenu .leftMenu'+i).click(function() {
