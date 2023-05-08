@@ -87,7 +87,7 @@ func main() {
 		fmt.Println("The message was successfully posted with the transaction number: " + msg)
 	}
 
-	result, err := serviceSetup.FindCertByCertNoAndName("101","Labor Contract01")
+	result, err := serviceSetup.FindCertByCertNoAndName("111","Labor Contract01")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
